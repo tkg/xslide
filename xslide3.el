@@ -260,6 +260,8 @@
   (setq imenu-extract-index-name-function 'xsl-imenu-create-index-function)
   (imenu-add-to-menubar "Templates")
   (make-local-variable 'tab-width)
-  (setq tab-width 8))
+  (setq tab-width 8)
+  (setq indent-tabs-mode nil)
+  (modify-syntax-entry ?' "."))
 
 ;;; xslide3.el ends here
