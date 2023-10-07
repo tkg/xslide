@@ -4,7 +4,7 @@
 ;; Author: Tony Graham <tkg@menteith.com>
 ;; Contributors: Simon Brooke, Girard Milmeister, Norman Walsh,
 ;;               Moritz Maass, Lassi Tuura, Simon Wright, KURODA Akira,
-;;               Ville Skytt�, Glen Peterson
+;;               Ville Skyttä, Glen Peterson
 ;; Created: 29 July 2011
 ;; Keywords: languages, xsl, xml
 
