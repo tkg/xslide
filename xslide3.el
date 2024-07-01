@@ -41,7 +41,9 @@
 	(key-alist '())
 	(attribute-set-alist '())
 	(name-alist '())
-	(function-alist '()))
+	(function-alist '())
+	(accumulator-alist '())
+	(xsl-mode-alist '()))
     (goto-char (point-min))
     (while
 	(re-search-forward
@@ -227,14 +229,89 @@
 			(match-beginning 2)
 			(match-beginning 3)))
 		 function-alist))))
+    (goto-char (point-min))
+    (while
+	(re-search-forward
+	 "^\\s-*<xsl:accumulator\\(\\s-+\\)" nil t)
+      ;; Go to the beginning of the whitespace after the element name
+      (goto-char (match-beginning 1))
+      ;; Match on either single-quoted or double-quoted attribute value.
+      ;; The expression that doesn't match will have return nil for
+      ;; `match-beginning' and `match-end'.
+      (if (save-excursion
+	    (re-search-forward
+	     "name\\s-*=\\s-*\\(\"\\([^\"]*\\)\"\\|'\\([^']*\\)'\\)"
+	     (save-excursion
+	       (save-match-data
+		 (re-search-forward "<\\|>$" nil t)))
+	     t))
+	  (setq accumulator-alist
+		(cons
+		 (cons (buffer-substring-no-properties
+			;; Rely on the pattern that didn't match
+			;; returning nil and on `or' evaluating the
+			;; second form when the first returns nil.
+			(or
+			 (match-beginning 2)
+			 (match-beginning 3))
+			(or
+			 (match-end 2)
+			 (match-end 3)))
+		       (or
+			(match-beginning 2)
+			(match-beginning 3)))
+		 accumulator-alist))))
+    (goto-char (point-min))
+    (while
+	(re-search-forward
+	 "^\\s-*\\(<xsl:mode\\)\\(\\s-+\\)" nil t)
+      ;; Go to the beginning of the whitespace after the element name
+      (goto-char (match-beginning 2))
+      ;; Match on either single-quoted or double-quoted attribute value.
+      ;; The expression that doesn't match will have return nil for
+      ;; `match-beginning' and `match-end'.
+      (if (save-excursion
+	    (re-search-forward
+	     "name\\s-*=\\s-*\\(\"\\([^\"]*\\)\"\\|'\\([^']*\\)'\\)"
+	     (save-excursion
+	       (save-match-data
+		 (re-search-forward "<\\|>$" nil t)))
+	     t))
+	  (setq xsl-mode-alist
+		(cons
+		 (cons (buffer-substring-no-properties
+			;; Rely on the pattern that didn't match
+			;; returning nil and on `or' evaluating the
+			;; second form when the first returns nil.
+			(or
+			 (match-beginning 2)
+			 (match-beginning 3))
+			(or
+			 (match-end 2)
+			 (match-end 3)))
+		       (or
+			(match-beginning 2)
+			(match-beginning 3)))
+		 xsl-mode-alist))
+	(setq xsl-mode-alist
+	      (cons
+	       (cons "#unnamed" (point))
+	       xsl-mode-alist))))
+    (message "%S" accumulator-alist)
+    (message "%S" xsl-mode-alist)
     (append
      (if key-alist
 	 (list (cons "xsl:key" (xsl-sort-alist key-alist))))
      (if function-alist
 	 (list (cons "xsl:function" (xsl-sort-alist function-alist))))
+     (if accumulator-alist
+	 (list (cons "xsl:accumulator" (xsl-sort-alist accumulator-alist))))
      (if attribute-set-alist
 	 (list (cons "xsl:attribute-set"
 		     (xsl-sort-alist attribute-set-alist))))
+     (if xsl-mode-alist
+	 (list (cons "xsl:mode"
+		     (xsl-sort-alist xsl-mode-alist))))
      (if name-alist
 	 (list (cons "name=" (xsl-sort-alist name-alist))))
      (if mode-alist
