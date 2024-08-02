@@ -1,10 +1,10 @@
 ;;;; xslide3.el --- XSL Integrated Development Environment
-;; Copyright (C) 1998, 1999, 2000, 2001, 2003, 2011, 2013 Tony Graham
+;; Copyright (C) 1998, 1999, 2000, 2001, 2003, 2011, 2013, 2024 Tony Graham
 
 ;; Author: Tony Graham <tkg@menteith.com>
 ;; Contributors: Simon Brooke, Girard Milmeister, Norman Walsh,
 ;;               Moritz Maass, Lassi Tuura, Simon Wright, KURODA Akira,
-;;               Ville Skyttä, Glen Peterson
+;;               Ville Skyttä, Glen Peterson, Samuel Bronson
 ;; Created: 29 July 2011
 ;; Keywords: languages, xsl, xml
 
@@ -297,8 +297,6 @@
 	      (cons
 	       (cons "#unnamed" (point))
 	       xsl-mode-alist))))
-    (message "%S" accumulator-alist)
-    (message "%S" xsl-mode-alist)
     (append
      (if key-alist
 	 (list (cons "xsl:key" (xsl-sort-alist key-alist))))

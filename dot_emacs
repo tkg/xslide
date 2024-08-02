@@ -1,0 +1,14 @@
+(setq load-path
+      (append
+       (list
+	"/your/path/to/xslide" ; (expand-file-name "~/site-lisp/xslide")
+	)
+       load-path))
+
+;; XSL stylesheet mode.
+(autoload 'xsl-mode "xslide3" "Major mode for XSL stylesheets." t)
+(setq auto-mode-alist
+      (append
+       (list
+	'("\\.xslt?$" . xsl-mode))
+       auto-mode-alist))
