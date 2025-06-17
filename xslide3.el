@@ -324,6 +324,17 @@
 
 
 
+(defun lorem-ipsum-xsl-mode-hook ()
+  "Set some variables for lorem-ipsum in `xsl-mode'."
+  (setq lorem-ipsum-paragraph-separator "</fo:block>\n<fo:block>"
+	lorem-ipsum-sentence-separator " "
+	lorem-ipsum-list-beginning "<fo:list>\n"
+	lorem-ipsum-list-bullet "<fo:list-item>\n<fo:list-item-label>*</fo:list-item-label>\n<fo:list-item-body>"
+	lorem-ipsum-list-item-end "</fo:list-item-body>\n</fo:list-item>\n"
+	lorem-ipsum-list-end "</fo:list>\n"))
+
+(add-hook 'xsl-mode-hook #'lorem-ipsum-xsl-mode-hook)
+
 
 (define-derived-mode xsl-mode nxml-mode "xslide"
   "Major mode for editing XSLT."
